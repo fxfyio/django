@@ -1,1 +1,13 @@
-{{ question }}
+<form action="{% url 'polls:vote' question.id %}" method="post"> <!-- 创建一个表单，提交给投票URL，并使用POST方法 -->
+{% csrf_token %} <!-- 添加CSRF令牌以增加安全性 -->
+<fieldset> <!-- 创建一个字段集合，用于将表单元素组合在一起 -->
+    <legend><h1>{{ question.question_text }}</h1></legend> <!-- 为字段集添加标题，显示问题文本 -->
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %} <!-- 如果存在错误消息，则显示 -->
+    {% for choice in question.choice_set.all %} <!-- 遍历所有的选项 -->
+        <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}"> <!-- 创建一个单选按钮，用于选择投票选项 -->
+        <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br> <!-- 创建标签，显示选项文本 -->
+    {% endfor %}
+</fieldset>
+<input type="submit" value="Vote"> <!-- 创建投票按钮 -->
+</form> <!-- 结束表单 -->
+    
